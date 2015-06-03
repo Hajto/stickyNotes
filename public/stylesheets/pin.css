@@ -1,0 +1,59 @@
+.textDiv {
+
+}
+
+.textDisplay{
+    margin-top: 5px;
+    position: absolute;
+    top: 0;
+    padding: 5px;
+    overflow: auto;
+}
+
+.icon{
+    cursor: pointer;
+    position: absolute;
+    top:5px;
+}
+
+.sticker {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    position: absolute;
+    border: solid 2px black;
+    cursor: move;
+    background-color: #003399;
+}
+
+.thing{
+    position: absolute;
+    background-color: gray;
+}
+
+.rightResize {
+    height: 100%;
+    width: 2px;
+    top:0;
+    right: -2px;
+    cursor: e-resize;
+}
+
+.bottomResize {
+    height: 2px;
+    width: 100%;
+    bottom: -2px;
+    cursor: s-resize;
+}
+
+.resize {
+    width: 9px;
+    height: 9px;
+    right: -2px;
+    bottom: -2px;
+    cursor: se-resize;
+}

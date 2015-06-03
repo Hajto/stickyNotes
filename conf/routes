@@ -1,0 +1,16 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                        controllers.Application.index
+
+GET         /repository/:repo        controllers.Application.htmlVendor(repo)
+
+GET         /all/:repo               controllers.Application.selectAll(repo :String)
+
+POST        /create/:repo            controllers.Application.create(repo :String)
+POST        /remove/:repo            controllers.Application.delete(repo: String)
+POST        /update/:repo            controllers.Application.update(repo: String)
+
+GET         /assets/*file            controllers.Assets.at(path="/public", file)
