@@ -1,6 +1,11 @@
 var x;
 var y;
 
+var colors ={
+    one: "#eeeeee",
+    two: "#ff00ff"
+};
+
 var config = {
     minimalChange: {
         posLeft: 5,
@@ -20,7 +25,7 @@ var currentPins = [];
 
 
 function addBtn() {
-    currentPins.push(new _memo(aidee, 200, 150, (window.innerWidth - 200) / 2, (Math.floor(window.innerHeight - 150) / 2), "<p>word</p>"));
+    currentPins.push(new _memo(aidee, 200, 150, (window.innerWidth - 200) / 2, (Math.floor(window.innerHeight - 150) / 2), "<p>word</p>", "Example" ,colors.one, Math.PI/24));
     var temp;
     temp = document.getElementsByClassName("sticker");
     for (var i = 0; i < currentPins.length; i++) {
@@ -39,14 +44,19 @@ function mouseMoveHandler(e) {
     x = e.clientX;
     y = e.clientY;
 }
-function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _bson) {
+function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _title ,_bg, _rot , _bson) {
     //Data that will be stored in db
     this.id = _id;
     this.width = _szer;
     this.height = _wys;
     this.posLeft = _posLeft;
     this.posTop = _posTop;
+
     this.content = _tresc;
+    this.title = _title;
+
+    this.background = _bg;
+    this.rotation = _rot;
 
     this.BSONId = _bson;
 
@@ -74,7 +84,10 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _bson) {
             height: this.height,
             posLeft: this.posLeft,
             posTop: this.posTop,
-            content: this.content
+            content: this.content,
+            title: this.title,
+            bg: this.background,
+            rotation: this.rotation
         }
     };
     this.sendUpdate = function () {
@@ -118,8 +131,6 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _bson) {
     div.appendChild(bottomRightDiv);
 
     this.startEditing = function () {
-        document.getElementById('kupa').style.top = (window.innerHeight - 400) / 2 + 'px';
-        document.getElementById('kupa').style.left = (window.innerWidth - 600) / 2 + 'px';
 
         tinyMCE.activeEditor.setContent(this.content);
     };
@@ -134,11 +145,13 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _bson) {
 
     function init() {
         var writeIcon = document.createElement("i");
-        writeIcon.className = "fa fa-pencil icon";
+        writeIcon.className = "fa fa-2x fa-pencil icon";
         writeIcon.style.left = "5px";
+        var pin = document.createElement("div");
+        pin.className = "pin";
         var deleteIcon = document.createElement("i");
-        deleteIcon.className = "fa fa-trash-o icon";
-        deleteIcon.style.right = "5px";
+        deleteIcon.className = "fa fa-2x fa-trash-o icon";
+        deleteIcon.style.left = "35px";
         deleteIcon.addEventListener('mousedown', function () {
             document.body.removeChild(div);
             div.appendChild(deleteIcon);
@@ -157,7 +170,13 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _bson) {
             removeIntervals();
             ref.startEditing();
         });
+        var title = document.createElement("span");
+        title.className = "title";
+        title.innerHTML = ref.title;
+
+        div.appendChild(title);
         div.appendChild(deleteIcon);
+        div.appendChild(pin);
         div.appendChild(writeIcon);
 
         document.body.addEventListener('mouseup', function () {
@@ -178,6 +197,8 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _bson) {
         div.style.height = ref.height + "px";
         div.style.width = ref.width + "px";
         div.style.zIndex = ref.id;
+        div.style.backgroundColor = ref.background;
+        div.style.transform = "rotate("+ (ref.rotation*(180/Math.PI))+"deg)";
         div.className = "sticker";
 
 
@@ -192,11 +213,12 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _bson) {
                 if (temp[j].style.zIndex > div.style.zIndex) {
                     temp[j].style.zIndex -= 1;
                 }
-                if (temp[j].style.backgroundColor != "#FFFFAA")
-                    temp[j].style.backgroundColor = "#FFFFAA";
+                if (!temp[j].getAttribute("is-selected"))
+                    temp[j].style.borderColor = "black";
             }
             div.style.zIndex = temp.length;
-            div.style.backgroundColor = "#FFDDAA";
+            div.setAttribute("isSelected",true);
+            div.style.border = "1px solid red";
             ref.isLast = true;
 
             clearInterval(ref.interval);
@@ -226,7 +248,7 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _bson) {
         div.addEventListener("mousemove", function () {
             ref.isMoving = true;
         }, false);
-        div.addEventListener("mouseup", function () {
+        document.addEventListener("mouseup", function () {
             removeIntervals();
             ref.sendUpdate(ref)
         }, false);

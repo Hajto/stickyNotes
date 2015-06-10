@@ -7,7 +7,7 @@ function createPin(pin) {
         function (response) {
             var parsed = JSON.parse(response);
             if (parsed.success) {
-                pin.BSONId = parsed._id
+                pin.BSONId = parsed._id.$oid
             }
         }, function (response) {
             alert(response)
@@ -68,6 +68,7 @@ function update(data) {
 function parseFeed(array) {
     for (var i = 0; i < array.length; i++) {
         var object = array[i];
-        currentPins.push(new _memo(object.id, object.width, object.height, object.posLeft, object.posTop, object.content, object._id.$oid))
+        console.log(object);
+        currentPins.push(new _memo(object.id, object.width, object.height, object.posLeft, object.posTop, object.content,object.title,object.bg, object.rotation , object._id.$oid))
     }
 }

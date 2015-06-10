@@ -1,7 +1,6 @@
 @(repoName: String)
 
 <!DOCTYPE html>
-
 <html lang="en">
     <head>
         <title>Fridge</title>
@@ -10,23 +9,31 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 
         <script src="@routes.Assets.at("javascripts/init.js")"></script>
+        <script src="@routes.Assets.at("libs/tinymce/tinymce.min.js")"></script>
 
         <script src="@routes.Assets.at("javascripts/view/pin.js")"></script>
 
         <script src="@routes.Assets.at("javascripts/connections/ajaxAPI.js")"></script>
         <script src="@routes.Assets.at("javascripts/connections/dataConnector.js")"></script>
 
+        <script>
+            var repoName = "@repoName";
+
+            //Statistics
+            //TODO: Encupsulate into object
+            var progress;
+            var number = 0;
+            var deleted;
+        </script>
     </head>
     <body onload="init()">
-    <script>
-        var repoName = "@repoName";
+        <p>dupa</p>
+        <div>
+            <form>
+                <input id="iTitle" placeholder="Nazwa"><br/>
+                <textarea id="iContent" placeholder="Tresc"></textarea>
+            </form>
+        </div>
 
-        //Statistics
-        //TODO: Encupsulate into object
-        var progress;
-        var number = 0;
-        var deleted;
-    </script>
     </body>
 </html>
-
