@@ -21,20 +21,34 @@ object Application extends Controller with MongoController {
   val idReads : Reads[String] = (JsPath \ "_id").read[String]
 
   def collection(repo: String): JSONCollection = db.collection[JSONCollection](repo)
+  def stats : JSONCollection = db.collection[JSONCollection]("super-uber-ille")
 
-  def index = Action {
-    Ok(views.html.index("repo"))
-  }
+  def index = htmlVendor("repo")
 
-  def htmlVendor(repo: String) = Action {
-    Ok(views.html.index(repo))
+
+  def htmlVendor(repo: String) = Action.async {
+    val cursor: Cursor[JsObject] = stats.find($("name" -> repo)).cursor[JsObject]
+    val futureSlavesList: Future[List[JsObject]] = cursor.collect[List]()
+    futureSlavesList.map { pins =>
+      println(pins)
+      if(pins.nonEmpty){
+        println(pins.head)
+        Ok(views.html.index(repo, Html(Json.toJson(pins.head).toString())))
+      } else {
+        Ok(views.html.index(repo, Html("{}")))
+      }
+    }
   }
 
   def create(repo: String) = Action.async(parse.json) { implicit req =>
     val id = BSONObjectID.generate
     collection(repo).insert($("_id" -> id) ++ req.body.as[JsObject]).map { last =>
-      if(last.ok)
+      if(last.ok){
+        stats.update($("name" -> repo),$("$inc" -> $("created" -> 1)),upsert=true).map{ last =>
+          println(last.ok)
+        }
         Ok(Json.toJson($("_id"->id) ++ $("success"->true)))
+      }
       else
         BadRequest($("success"->false))
     }
@@ -51,7 +65,14 @@ object Application extends Controller with MongoController {
   def delete(repo: String) = Action.async(parse.json) { implicit req =>
     req.body.validate[String](idReads).map{ id =>
       println(id)
-      collection(repo).remove($("_id" -> BSONObjectID(id))).map( last => Ok($("success"->last.ok)))
+      collection(repo).remove($("_id" -> BSONObjectID(id))).map {last =>
+        if(last.ok){
+          stats.update($("name" -> repo),$("$inc" -> $("deleted" -> 1)),upsert=true).map{ last =>
+            println(last.ok)
+          }
+          Ok($("success"->last.ok))
+        } else
+          BadRequest("BadJson")}
     } getOrElse { Future.successful(BadRequest($("BadJson"->req.body)))}
   }
 

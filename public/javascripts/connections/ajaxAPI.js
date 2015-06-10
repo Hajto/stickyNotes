@@ -10,6 +10,7 @@ function ajaxAPI(haitoRequest){
         if (xmlhttp.readyState==4) {
             if (xmlhttp.status == 200) {
                 haitoRequest.onSuccess(xmlhttp.responseText);
+                syncStats();
             } else {
                 haitoRequest.onError(xmlhttp.responseText);
             }

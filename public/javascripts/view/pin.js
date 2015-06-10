@@ -19,6 +19,7 @@ var aidee = 1; //id nastepnej karteczki (max + 1)
 var przebieg;
 var number = 0;
 var deleted;
+var everCreated;
 var fridge;
 
 var currentPins = [];
@@ -155,6 +156,7 @@ function _memo(_szer, _wys, _posLeft, _posTop, _tresc, _title ,_bg, _rot , _bson
 
     aidee++;
     number++;
+    everCreated++;
 
     init();
 

@@ -1,4 +1,4 @@
-@(repoName: String)
+@(repoName: String, stats: Html)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +19,7 @@
 
         <script>
             var repoName = "@repoName";
-
+            var currentStats = JSON.parse('@stats');
             //Statistics
             //TODO: Encupsulate into object
             var progress;
@@ -35,6 +35,11 @@
         </style>
     </head>
     <body onload="init()">
+        <div id="stats">
+            <div id="created">Utworzono: </div>
+            <div id ="currentCount">Obecnie: </div>
+            <div id="deleted">Usunięto: </div>
+        </div>
         <div id="formContainer">
             <form>
                 <input id="iTitle" placeholder="Nazwa"><br/>
