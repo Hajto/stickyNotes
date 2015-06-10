@@ -1,0 +1,36 @@
+#formContainer {
+    background: #c8c8c8;
+    z-index: 1000;
+    padding: 10px;
+    display: none;
+
+    width: 80%;
+    height: 80%;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+#iTitle {
+    margin: 10px auto;
+    display: block;
+    padding: 10px;
+}
+
+#submit{
+    padding: 5px;
+    display: block;
+    margin: 5px auto;
+}
+
+#blackout{
+    background: rgba(0,0,0,0.1);
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}

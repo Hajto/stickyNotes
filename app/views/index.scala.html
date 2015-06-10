@@ -6,6 +6,7 @@
         <title>Fridge</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font-awesome.min.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/pin.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/textEditor.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 
         <script src="@routes.Assets.at("javascripts/init.js")"></script>
@@ -25,15 +26,27 @@
             var number = 0;
             var deleted;
         </script>
+        <style>
+            html,body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+        </style>
     </head>
     <body onload="init()">
-        <p>dupa</p>
-        <div>
+        <div id="formContainer">
             <form>
                 <input id="iTitle" placeholder="Nazwa"><br/>
                 <textarea id="iContent" placeholder="Tresc"></textarea>
+                <button type="button" id="submit"> Submit</button>
             </form>
         </div>
+        <div id="addButton">
+            <i class="fa fa-3x fa-plus"></i>
+        </div>
+        <div id="blackout">
 
+        </div>
     </body>
 </html>

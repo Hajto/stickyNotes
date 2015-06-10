@@ -69,6 +69,6 @@ function parseFeed(array) {
     for (var i = 0; i < array.length; i++) {
         var object = array[i];
         console.log(object);
-        currentPins.push(new _memo(object.id, object.width, object.height, object.posLeft, object.posTop, object.content,object.title,object.bg, object.rotation , object._id.$oid))
+        currentPins.push(new _memo(object.width, object.height, object.posLeft, object.posTop, object.content,object.title,object.bg, object.rotation , object._id.$oid))
     }
 }

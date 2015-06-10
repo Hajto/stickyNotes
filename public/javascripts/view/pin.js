@@ -25,7 +25,7 @@ var currentPins = [];
 
 
 function addBtn() {
-    currentPins.push(new _memo(aidee, 200, 150, (window.innerWidth - 200) / 2, (Math.floor(window.innerHeight - 150) / 2), "<p>word</p>", "Example" ,colors.one, Math.PI/24));
+    currentPins.push(new _memo(200, 150, (window.innerWidth - 200) / 2, (Math.floor(window.innerHeight - 150) / 2), "<p>word</p>", "Example" ,colors.one, Math.PI/30));
     var temp;
     temp = document.getElementsByClassName("sticker");
     for (var i = 0; i < currentPins.length; i++) {
@@ -44,9 +44,9 @@ function mouseMoveHandler(e) {
     x = e.clientX;
     y = e.clientY;
 }
-function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _title ,_bg, _rot , _bson) {
+function _memo(_szer, _wys, _posLeft, _posTop, _tresc, _title ,_bg, _rot , _bson) {
     //Data that will be stored in db
-    this.id = _id;
+    this.id = aidee;
     this.width = _szer;
     this.height = _wys;
     this.posLeft = _posLeft;
@@ -79,7 +79,6 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _title ,_bg, _rot , 
 
     this.getJSONData = function () {
         return {
-            id: this.id,
             width: this.width,
             height: this.height,
             posLeft: this.posLeft,
@@ -131,11 +130,27 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _title ,_bg, _rot , 
     div.appendChild(bottomRightDiv);
 
     this.startEditing = function () {
-
+        fridge = ref;
         tinyMCE.activeEditor.setContent(this.content);
+        document.getElementById("iTitle").value = ref.title;
+
+        document.getElementById("formContainer").style.display = "block";
+        document.getElementById("blackout").style.display = "block";
     };
-    this.finishEditing = function (param) {
-        textDiv.innerHTML = param;
+    this.finishEditing = function () {
+        var newValue = tinyMCE.activeEditor.getContent();
+        var newTitle = document.getElementById("iTitle").value;
+        if(newValue != ref.content || newTitle != ref.title){
+            ref.content = newValue;
+            ref.title = newTitle;
+            textDiv.innerHTML = newValue;
+            ref.titleDiv.innerHTML = newTitle;
+
+            update({content: newValue, title: newTitle , _id: ref.BSONId})
+        }
+
+        document.getElementById("formContainer").style.display = "none";
+        document.getElementById("blackout").style.display = "none";
     };
 
     aidee++;
@@ -170,11 +185,11 @@ function _memo(_id, _szer, _wys, _posLeft, _posTop, _tresc, _title ,_bg, _rot , 
             removeIntervals();
             ref.startEditing();
         });
-        var title = document.createElement("span");
-        title.className = "title";
-        title.innerHTML = ref.title;
+        ref.titleDiv = document.createElement("span");
+        ref.titleDiv.className = "title";
+        ref.titleDiv.innerHTML = ref.title;
 
-        div.appendChild(title);
+        div.appendChild(ref.titleDiv);
         div.appendChild(deleteIcon);
         div.appendChild(pin);
         div.appendChild(writeIcon);

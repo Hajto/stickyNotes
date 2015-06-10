@@ -112,3 +112,18 @@
     bottom: -2px;
     cursor: se-resize;
 }
+
+#addButton{
+    background: #e2c2b8;
+    width: 80px;
+    height: 80px;
+    color:white;
+    text-align: center;
+    border-radius: 80px;
+    line-height: 80px;
+    vertical-align: middle;
+
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
